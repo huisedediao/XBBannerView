@@ -1,15 +1,19 @@
 //
 //  XBBannerViewCell.h
-//  XBBannerView
+//  XBBannerViewDemo
 //
-//  Created by XXB on 16/6/30.
-//  Copyright © 2016年 XXB. All rights reserved.
+//  Created by xxb on 2019/7/11.
+//  Copyright © 2019 xxb. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
+
+NS_ASSUME_NONNULL_BEGIN
 
 @interface XBBannerViewCell : UICollectionViewCell
 @property (copy,nonatomic) NSString *imageUrl;
 @property (copy,nonatomic) NSString *imageName;
 @property (copy,nonatomic) NSString *placeholderImageName;
 @end
+
+NS_ASSUME_NONNULL_END

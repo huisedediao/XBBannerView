@@ -24,18 +24,18 @@
 @implementation XBBannerView
 
 #pragma mark - 初始化
--(instancetype)initWithCoder:(NSCoder *)aDecoder
-{
-    if (self=[super initWithCoder:aDecoder])
-    {
-        [self initParams];
-        [self setupSubviews];
-    }
-    return self;
-}
+//-(instancetype)initWithCoder:(NSCoder *)aDecoder
+//{
+//    if (self=[super initWithCoder:aDecoder])
+//    {
+//        [self initParams];
+//        [self setupSubviews];
+//    }
+//    return self;
+//}
 -(instancetype)initWithFrame:(CGRect)frame
 {
-    if (self=[super initWithFrame:frame])
+    if (self = [super initWithFrame:frame])
     {
         [self initParams];
         [self setupSubviews];
@@ -45,7 +45,7 @@
 
 -(void)initParams
 {
-    self.timeOfImageChange=4.0;
+    self.timeOfImageChange = 4.0;
     
     //注册监听
     //注册监听 监听APP重后台回到前台
@@ -76,18 +76,18 @@
     flow.minimumLineSpacing = 0;
     
     //创建xbCollectionView
-    self.xbCollectionView= [[UICollectionView alloc] initWithFrame:CGRectMake(10, 10, 100, 100) collectionViewLayout:flow];
+    self.xbCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(10, 10, 100, 100) collectionViewLayout:flow];
     [self addSubview:self.xbCollectionView];
     
-    self.xbCollectionView.pagingEnabled=YES;
+    self.xbCollectionView.pagingEnabled = YES;
     self.xbCollectionView.delegate = self;
     self.xbCollectionView.dataSource = self;
-    self.xbCollectionView.backgroundColor=[UIColor whiteColor];
-    self.xbCollectionView.showsHorizontalScrollIndicator=NO;
-    self.xbCollectionView.showsVerticalScrollIndicator=NO;
+    self.xbCollectionView.backgroundColor = [UIColor whiteColor];
+    self.xbCollectionView.showsHorizontalScrollIndicator = NO;
+    self.xbCollectionView.showsVerticalScrollIndicator = NO;
     
     // 注册item:
-    [self.xbCollectionView registerNib:[UINib nibWithNibName:@"XBBannerViewCell" bundle:nil] forCellWithReuseIdentifier:@"XBBannerViewCell"];
+    [self.xbCollectionView registerClass:[XBBannerViewCell class] forCellWithReuseIdentifier:@"XBBannerViewCell"];
     
     //布局xbCollectionView
     [self.xbCollectionView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -96,7 +96,7 @@
     
     
     //pageControl相关
-    self.xbPageControl=[[UIPageControl alloc] init];
+    self.xbPageControl = [[UIPageControl alloc] init];
     [self addSubview:self.xbPageControl];
     
     [self.xbPageControl mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -130,17 +130,17 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     XBBannerViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"XBBannerViewCell" forIndexPath:indexPath];
-    cell.placeholderImageName=self.placeholderImageName;
+    cell.placeholderImageName = self.placeholderImageName;
     
     NSInteger index=indexPath.item%self.imageSource.count;
     
     if (self.imageUrlArr)
     {
-        cell.imageUrl=self.imageSource[index];
+        cell.imageUrl = self.imageSource[index];
     }
     else if (self.imageNameArr)
     {
-        cell.imageName=self.imageSource[index];
+        cell.imageName = self.imageSource[index];
     }
     return cell;
 }
@@ -161,7 +161,7 @@
 -(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
     [self removeTime];
-    self.draggingStartTime=[NSDate date].timeIntervalSince1970;
+    self.draggingStartTime = [NSDate date].timeIntervalSince1970;
     //上一次结束拖动的时间到此次拖动的时间间隔小于0.2秒
     if (self.draggingStartTime-self.draggingEndTime<0.5)
     {
@@ -175,7 +175,7 @@
 
 -(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
-    self.draggingEndTime=[NSDate date].timeIntervalSince1970;
+    self.draggingEndTime = [NSDate date].timeIntervalSince1970;
     [self fixIndex];
 }
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
@@ -240,7 +240,7 @@
 {
     
     //        return;
-    if (self.imageSource.count>3 && self.time==nil)
+    if (self.imageSource.count > 3 && self.time == nil)
     {
         self.time = [NSTimer scheduledTimerWithTimeInterval:4.0 target:self selector:@selector(nextAdv:) userInfo:nil repeats:YES];
         [[NSRunLoop currentRunLoop] addTimer:self.time forMode:NSRunLoopCommonModes];
@@ -259,11 +259,11 @@
     //不可交互
     self.xbCollectionView.userInteractionEnabled=NO;
     
-    if (self.notFirstRun==NO)
+    if (self.notFirstRun == NO)
     {
         //第一次自动滚动前偷偷滚动到index位置,避免一次滚动多张图的情况
         [self feint];
-        self.notFirstRun=YES;
+        self.notFirstRun = YES;
     }
     
     self.index++;
@@ -272,7 +272,7 @@
 -(void)setPageControlCurrentPage:(NSInteger)index
 {
     
-    self.xbPageControl.currentPage=index;
+    self.xbPageControl.currentPage = index;
 }
 
 #pragma mark - 改变图片后需要调用的公共方法
@@ -287,19 +287,19 @@
 -(void)fixIndex
 {
     
-    if (self.index==self.imageSource.count-1)
+    if (self.index == self.imageSource.count-1)
     {
-        self.index=self.imageSource.count/2-1;
+        self.index = self.imageSource.count/2-1;
     }
-    else if (self.index==0)
+    else if (self.index == 0)
     {
-        self.index=self.imageSource.count/2;
+        self.index = self.imageSource.count/2;
     }
 }
 -(void)feint
 {
     
-    if (self.imageSource.count>0)
+    if (self.imageSource.count > 0)
     {
         [self.xbCollectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:self.index inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:NO];
     }
@@ -311,9 +311,9 @@
 -(void)setImageNameArr:(NSArray *)imageNameArr
 {
     
-    _imageNameArr=imageNameArr;
+    _imageNameArr = imageNameArr;
     
-    if(self.imageUrlArr.count>0)
+    if(self.imageUrlArr.count > 0)
     {
         return;
     }
@@ -330,26 +330,26 @@
 -(void)setCollectionViewOffset:(NSArray *)arr
 {
     
-    if (arr.count==0 || arr==nil)//如果数组为空或者为nil,啥也不做
+    if (arr.count == 0 || arr == nil)//如果数组为空或者为nil,啥也不做
     {
         return;
     }
-    else if (arr.count==1)//如果数组元素数量为1,不可滚动,不显示pageControl
+    else if (arr.count == 1)//如果数组元素数量为1,不可滚动,不显示pageControl
     {
-        self.xbCollectionView.scrollEnabled=NO;
-        self.xbPageControl.numberOfPages=0;
+        self.xbCollectionView.scrollEnabled = NO;
+        self.xbPageControl.numberOfPages = 0;
     }
     else //数组元素数量大于1
     {
-        self.xbCollectionView.scrollEnabled=YES;
-        self.xbPageControl.numberOfPages=arr.count;
+        self.xbCollectionView.scrollEnabled = YES;
+        self.xbPageControl.numberOfPages = arr.count;
     }
     
-    NSMutableArray *arrM=[NSMutableArray arrayWithArray:arr];
+    NSMutableArray *arrM = [NSMutableArray arrayWithArray:arr];
     [arrM addObjectsFromArray:arr];
-    self.imageSource=arrM;
+    self.imageSource = arrM;
     
-    self.index=arr.count;
+    self.index = arr.count;
     
     //延迟刷新,等collectionView自动布局完成,保证item的size正确
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.03 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -363,8 +363,8 @@
 -(void)setPlaceholderImageName:(NSString *)placeholderImageName
 {
     
-    _placeholderImageName=placeholderImageName;
-    self.imageNameArr=@[placeholderImageName];
+    _placeholderImageName = placeholderImageName;
+    self.imageNameArr = @[placeholderImageName];
 }
 
 
